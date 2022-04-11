@@ -88,7 +88,7 @@
 </template>
 
 <script>
-import { mapMutations } from "vuex";
+import { mapMutations } from 'vuex';
 
 export default {
     components: {},
@@ -100,23 +100,23 @@ export default {
                         isRequired: true,
                         isValid: false,
                         isEmpty: false,
-                        value: "",
+                        value: '',
                     },
                     content: {
                         isRequired: false,
-                        value: "",
+                        value: '',
                     },
                     img: {
                         isRequired: true,
                         isValid: false,
                         isEmpty: false,
-                        value: "",
+                        value: '',
                     },
                     price: {
                         isRequired: true,
                         isValid: false,
                         isEmpty: false,
-                        value: "",
+                        value: '',
                     },
                 },
                 isFormValid: false,
@@ -135,13 +135,24 @@ export default {
             this.setGood(good);
             event.target.form.reset();
         },
+        formValidation() {
+            for (const field of Object.values(this.form.fields)) {
+                if (!field.isRequired) continue;
+                if (!field.isValid) {
+                    this.form.isFormValid = false;
+                    return;
+                } else {
+                    this.form.isFormValid = true;
+                }
+            }
+        },
         ...mapMutations({
-            setGood: "goods/setGood",
+            setGood: 'goods/setGood',
         }),
     },
     // Явно не лучший способ валидации, но другой я пока не приумал :(
     watch: {
-        "form.fields.name.value": {
+        'form.fields.name.value': {
             handler(newValue) {
                 if (newValue) {
                     this.form.fields.name.isValid = true;
@@ -150,9 +161,10 @@ export default {
                     this.form.fields.name.isValid = false;
                     this.form.fields.name.isEmpty = true;
                 }
+                this.formValidation();
             },
         },
-        "form.fields.img.value": {
+        'form.fields.img.value': {
             handler(newValue) {
                 if (newValue) {
                     this.form.fields.img.isValid = true;
@@ -161,9 +173,10 @@ export default {
                     this.form.fields.img.isValid = false;
                     this.form.fields.img.isEmpty = true;
                 }
+                this.formValidation();
             },
         },
-        "form.fields.price.value": {
+        'form.fields.price.value': {
             handler(newValue) {
                 if (newValue) {
                     this.form.fields.price.isValid = true;
@@ -172,21 +185,8 @@ export default {
                     this.form.fields.price.isValid = false;
                     this.form.fields.price.isEmpty = true;
                 }
+                this.formValidation();
             },
-        },
-        form: {
-            handler(newValue) {
-                for (const field of Object.values(newValue.fields)) {
-                    if (!field.isRequired) continue;
-                    if (!field.isValid) {
-                        this.form.isFormValid = false;
-                        return;
-                    } else {
-                        this.form.isFormValid = true;
-                    }
-                }
-            },
-            deep: true,
         },
     },
 };
