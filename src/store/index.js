@@ -1,8 +1,8 @@
 import { createStore } from "vuex";
+import goodsModule from "@/store/goodsModule";
 
 export default createStore({
-  state: {},
-  mutations: {},
-  actions: {},
-  modules: {},
+    modules: {
+        goods: goodsModule,
+    },
 });

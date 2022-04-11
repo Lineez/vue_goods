@@ -29,19 +29,25 @@ select,
 input,
 button,
 textarea {
+    border: none;
     color: inherit;
     font-family: inherit;
     font-size: inherit;
     background: transparent;
     text-decoration: transparent;
-    outline: 1px solid transparent;
-    transition: outline .3s ease-out;
     &::placeholder {
         color: inherit;
     }
-    &:focus {
+}
+a,
+option,
+select,
+input,
+button,
+textarea {
+    &:focus-visible {
         outline: 1px solid var(--color-black);
-        transition: outline .3s ease-in;
+        transition: outline .25s ease-out;
     }
 }
 option,
@@ -70,8 +76,14 @@ html {
     overflow-x: hidden;
 }
 body {
+    display: flex;
+    flex-direction: column;
+    font-family: var(--font-family_Source_Sans_Pro);
     scroll-behavior: smooth;
     &.lock {
         overflow: hidden;
     }
+}
+main {
+    flex: 1 1 auto;
 }

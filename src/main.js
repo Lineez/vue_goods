@@ -7,8 +7,7 @@ import store from "@/store";
 // global mixin & variables
 import "@/assets/scss/default/style.scss";
 // global fonts
-import "@/assets/fonts/Montserrat/style.css";
-import "@/assets/fonts/Lato/style.css";
+import "@/assets/fonts/SourceSansPro/stylesheet.css";
 
 const app = createApp(App);
 

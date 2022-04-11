@@ -1,3 +1,5 @@
+import FormField from './formField';
 
-
-export default []
+export default [
+    FormField
+]

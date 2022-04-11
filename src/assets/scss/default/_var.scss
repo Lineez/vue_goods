@@ -1,13 +1,24 @@
 :root {
+    // metricks
     --padding: 0.9375rem;
-    --wrap: 71.875rem;
-    --min-width: 20rem;
+    --wrap: 85.9375rem;
+    --min-width: 23.4375rem;
+
     // font-family
-    --font-family_Montserrat: "Montserrat", sans-serif;
-    --font-family_Lato: "Lato", sans-serif;
-}
-// class for theme
-.default-theme {
+    --font-family_Source_Sans_Pro: "Source Sans Pro", sans-serif;
+
+    // colors
     --color-black: #000000;
+    --color-black-light: #49485E;
     --color-white: #ffffff;
+    --color-gray: #EEEEEE;
+    --color-gray-dark: #3F3F3F;
+    --color-gray-semi-dark: #B4B4B4;
+    --color-gray-light: #FFFEFB;
+    --color-green-light: #7BAE73;
+    --color-orange: #FF8484;
+
+    @media(min-width:768px) {
+        --padding: 2rem;
+    }
 }

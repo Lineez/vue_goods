@@ -1,16 +1,16 @@
 <template>
-    <header></header>
-    <main class="default-theme"></main>
-    <footer></footer>
+    <main>
+        <router-view></router-view>
+    </main>
 </template>
 <script>
 export default {
-    data() {
-        return {};
-    },
-    methods: {},
+    components: {},
 };
 </script>
 
 <style lang="scss">
+body {
+    background: #faf9f7;
+}
 </style>
