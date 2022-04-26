@@ -10,6 +10,7 @@
         <input
             v-if="!field.isTextarea"
             @input="checkField($event, field)"
+            :value="modelValue"
             :id="field.id"
             :placeholder="field.placeholder"
             :type="field.fieldType"
@@ -17,6 +18,7 @@
         <textarea
             v-else
             @input="checkField($event, field)"
+            :value="modelValue"
             :id="field.id"
             :placeholder="field.placeholder"
             :type="field.fieldType"

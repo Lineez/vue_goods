@@ -99,6 +99,7 @@ export default {
         addGood() {
             const good = {
                 id: Date.now(),
+                url: 'javascript:void(0);',
                 name: this.form.fields.name.value,
                 content: this.form.fields.content.value,
                 img: this.form.fields.img.value,
