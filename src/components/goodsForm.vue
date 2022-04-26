@@ -1,79 +1,13 @@
 <template>
     <form class="goods__form form-goods">
-        <fieldset
-            class="form-goods__field"
-            :class="{
-                _required: form.fields.name.isRequired,
-                _error: !form.fields.name.isValid && form.fields.name.isEmpty,
-            }"
+        <goods-field
+            v-for="(field, name) in form.fields"
+            :key="field.id"
+            :field="field"
+            v-model="form.fields[name].value"
+            @formValidation="formValidation"
         >
-            <label for="field-name">Наименование товара</label>
-            <input
-                v-model="form.fields.name.value"
-                id="field-name"
-                placeholder="Введите наименование товара"
-                type="text"
-            />
-            <span
-                v-if="!form.fields.name.isValid && form.fields.name.isEmpty"
-                class="form-goods__errors"
-                >Поле является обязательным</span
-            >
-        </fieldset>
-        <fieldset
-            class="form-goods__field"
-            :class="{
-                _required: form.fields.content.isRequired,
-            }"
-        >
-            <label for="field-content">Описание товара</label>
-            <textarea
-                v-model="form.fields.content.value"
-                id="field-content"
-                placeholder="Введите описание товара"
-                type="text"
-            ></textarea>
-        </fieldset>
-        <fieldset
-            class="form-goods__field"
-            :class="{
-                _required: form.fields.img.isRequired,
-                _error: !form.fields.img.isValid && form.fields.img.isEmpty,
-            }"
-        >
-            <label for="field-img">Ссылка на изображение товара</label>
-            <input
-                v-model="form.fields.img.value"
-                id="field-img"
-                placeholder="Введите ссылку"
-                type="text"
-            />
-            <span
-                v-if="!form.fields.img.isValid && form.fields.img.isEmpty"
-                class="form-goods__errors"
-                >Поле является обязательным</span
-            >
-        </fieldset>
-        <fieldset
-            class="form-goods__field"
-            :class="{
-                _required: form.fields.price.isRequired,
-                _error: !form.fields.price.isValid && form.fields.price.isEmpty,
-            }"
-        >
-            <label for="field-price">Цена товара</label>
-            <input
-                v-model.number="form.fields.price.value"
-                id="field-price"
-                placeholder="Введите цену"
-                type="number"
-            />
-            <span
-                v-if="!form.fields.price.isValid && form.fields.price.isEmpty"
-                class="form-goods__errors"
-                >Поле является обязательным</span
-            >
-        </fieldset>
+        </goods-field>
 
         <button
             @click.prevent="addGood"
@@ -88,34 +22,72 @@
 </template>
 
 <script>
+import GoodsField from '@/components/goodsField.vue';
 import { mapMutations } from 'vuex';
 
 export default {
-    components: {},
+    components: { GoodsField },
     data() {
         return {
             form: {
                 fields: {
                     name: {
+                        id: 1,
+                        name: 'Наименование товара',
+                        placeholder: 'Введите наименование товара',
+                        errors: {
+                            required: {
+                                text: 'Поле является обязательным',
+                            },
+                        },
+                        fieldType: 'text',
                         isRequired: true,
                         isValid: false,
-                        isEmpty: false,
+                        isBlur: false,
                         value: '',
                     },
                     content: {
+                        id: 2,
+                        name: 'Описание товара',
+                        placeholder: 'Введите описание товара',
+                        // errors: {
+                        //     required: {
+                        //         text: 'Поле является обязательным',
+                        //     },
+                        // },
+                        fieldType: 'text',
+                        isTextarea: true,
                         isRequired: false,
                         value: '',
                     },
                     img: {
+                        id: 3,
+                        name: 'Ссылка на изображение товара',
+                        placeholder: 'Введите ссылку',
+                        errors: {
+                            required: {
+                                text: 'Поле является обязательным',
+                            },
+                        },
+                        fieldType: 'text',
                         isRequired: true,
                         isValid: false,
-                        isEmpty: false,
+                        isBlur: false,
                         value: '',
                     },
                     price: {
+                        id: 4,
+                        name: 'Цена товара',
+                        placeholder: 'Введите цену',
+                        errors: {
+                            required: {
+                                text: 'Поле является обязательным',
+                            },
+                        },
+                        fieldType: 'number',
                         isRequired: true,
                         isValid: false,
-                        isEmpty: false,
+                        isBlur: false,
                         value: '',
                     },
                 },
@@ -124,7 +96,7 @@ export default {
         };
     },
     methods: {
-        addGood(event) {
+        addGood() {
             const good = {
                 id: Date.now(),
                 name: this.form.fields.name.value,
@@ -133,7 +105,16 @@ export default {
                 price: this.form.fields.price.value,
             };
             this.setGood(good);
-            event.target.form.reset();
+            this.clearForm();
+        },
+        clearForm() {
+            for (const field of Object.values(this.form.fields)) {
+                if ('isValid' in field) field.isValid = false;
+                if ('isBlur' in field) field.isBlur = false;
+                field.value = '';
+            }
+
+            this.form.isFormValid = false;
         },
         formValidation() {
             for (const field of Object.values(this.form.fields)) {
@@ -149,45 +130,6 @@ export default {
         ...mapMutations({
             setGood: 'goods/setGood',
         }),
-    },
-    // Явно не лучший способ валидации, но другой я пока не приумал :(
-    watch: {
-        'form.fields.name.value': {
-            handler(newValue) {
-                if (newValue) {
-                    this.form.fields.name.isValid = true;
-                    this.form.fields.name.isEmpty = false;
-                } else {
-                    this.form.fields.name.isValid = false;
-                    this.form.fields.name.isEmpty = true;
-                }
-                this.formValidation();
-            },
-        },
-        'form.fields.img.value': {
-            handler(newValue) {
-                if (newValue) {
-                    this.form.fields.img.isValid = true;
-                    this.form.fields.img.isEmpty = false;
-                } else {
-                    this.form.fields.img.isValid = false;
-                    this.form.fields.img.isEmpty = true;
-                }
-                this.formValidation();
-            },
-        },
-        'form.fields.price.value': {
-            handler(newValue) {
-                if (newValue) {
-                    this.form.fields.price.isValid = true;
-                    this.form.fields.price.isEmpty = false;
-                } else {
-                    this.form.fields.price.isValid = false;
-                    this.form.fields.price.isEmpty = true;
-                }
-                this.formValidation();
-            },
-        },
     },
 };
 </script>

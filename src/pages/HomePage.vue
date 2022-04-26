@@ -24,12 +24,12 @@
 </template>
 
 <script>
-import GoodsForm from "@/components/goodsForm.vue";
-import { mapMutations, mapState, mapGetters } from "vuex";
-import GoodsList from "@/components/goodsList";
+import GoodsForm from '@/components/goodsForm.vue';
+import { mapMutations, mapState, mapGetters } from 'vuex';
+import GoodsList from '@/components/goodsList';
 
 export default {
-    name: "Home-page",
+    name: 'Home-page',
     components: { GoodsList, GoodsForm },
     data() {
         return {};
@@ -41,7 +41,7 @@ export default {
             selectedFilter: (state) => state.goods.selectedFilter,
         }),
         ...mapGetters({
-            sortedGoods: "goods/sortedGoods",
+            sortedGoods: 'goods/sortedGoods',
         }),
         selectFilter: {
             get() {
@@ -54,25 +54,32 @@ export default {
     },
     methods: {
         ...mapMutations({
-            setFilter: "goods/setSelectedFilter",
+            setFilter: 'goods/setSelectedFilter',
         }),
     },
     beforeUnmount() {
-        localStorage.setItem("goods", JSON.stringify(this.$store.state));
+        localStorage.setItem('goods', JSON.stringify(this.$store.state));
     },
     created() {
-        if (localStorage.getItem("goods")) {
+        if (localStorage.getItem('goods')) {
             this.$store.replaceState(
                 Object.assign(
                     {},
                     this.$store.state,
-                    JSON.parse(localStorage.getItem("goods"))
+                    JSON.parse(localStorage.getItem('goods'))
                 )
             );
         }
-        window.addEventListener("beforeunload", () => {
-            localStorage.setItem("goods", JSON.stringify(this.$store.state));
-        });
+        window.addEventListener(
+            'beforeunload',
+            () => {
+                localStorage.setItem(
+                    'goods',
+                    JSON.stringify(this.$store.state)
+                );
+            },
+            { once: true }
+        );
     },
 };
 </script>
@@ -115,7 +122,7 @@ export default {
             appearance: none;
         }
         &::after {
-            content: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iOCIgaGVpZ2h0PSI2IiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxwYXRoIGQ9Ik03LjQ4NSAxLjI0M0w0LjI0MyA0LjQ4NSAxIDEuMjQzIiBzdHJva2U9IiNCNEI0QjQiLz48L3N2Zz4=");
+            content: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iOCIgaGVpZ2h0PSI2IiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxwYXRoIGQ9Ik03LjQ4NSAxLjI0M0w0LjI0MyA0LjQ4NSAxIDEuMjQzIiBzdHJva2U9IiNCNEI0QjQiLz48L3N2Zz4=');
             position: absolute;
             right: 13px;
         }
@@ -189,7 +196,7 @@ export default {
         &._required {
             label {
                 &::after {
-                    content: "";
+                    content: '';
                     display: inline-block;
                     vertical-align: top;
                     width: 4px;
